@@ -52,6 +52,15 @@ function initAuth() {
             document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
         }
         loadAllVolunteers();
+        // 登入後重新載入當前分頁資料
+        const activeTab = document.querySelector('.tab.active');
+        if (activeTab) {
+            const tabId = activeTab.id.replace('tab-', '');
+            if (tabId === 'status') loadStatusBoard();
+            else if (tabId === 'leave') loadLeavePage();
+            else if (tabId === 'roster') loadRoster();
+            else if (tabId === 'contact') loadContactGroups();
+        }
     });
 }
 
