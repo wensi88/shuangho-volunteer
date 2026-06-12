@@ -16,18 +16,23 @@ function initTabs() {
     document.querySelectorAll('nav a[data-tab]').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            document.querySelectorAll('nav a[data-tab]').forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById('tab-' + link.dataset.tab).classList.add('active');
-
-            const tab = link.dataset.tab;
-            if (tab === 'status') loadStatusBoard();
-            else if (tab === 'leave') loadLeavePage();
-            else if (tab === 'roster') loadRoster();
-            else if (tab === 'contact') loadContactGroups();
+            switchTab(link.dataset.tab);
         });
     });
+    // 初始載入預設分頁
+    switchTab('status');
+}
+
+function switchTab(tab) {
+    document.querySelectorAll('nav a[data-tab]').forEach(l => l.classList.remove('active'));
+    document.querySelector(`nav a[data-tab="${tab}"]`).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+
+    if (tab === 'status') loadStatusBoard();
+    else if (tab === 'leave') loadLeavePage();
+    else if (tab === 'roster') loadRoster();
+    else if (tab === 'contact') loadContactGroups();
 }
 
 // ===== Auth =====
