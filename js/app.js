@@ -19,8 +19,7 @@ function initTabs() {
             switchTab(link.dataset.tab);
         });
     });
-    // 初始載入預設分頁
-    switchTab('status');
+    // 不要在 init 時載入資料，等 auth 完成後自動載入
 }
 
 function switchTab(tab) {
