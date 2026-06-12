@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雙和醫院四下志工</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #2e86c1 50%, #5dade2 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px 50px;
+        }
+        header h1 {
+            font-size: 2.4em;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+        header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+        header .hospital {
+            font-size: 1.3em;
+            margin-top: 8px;
+            font-weight: bold;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            display: inline-block;
+            padding-top: 12px;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            padding: 0;
+        }
+        nav a {
+            display: inline-block;
+            padding: 16px 28px;
+            color: #1a5276;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            background: #eaf2f8;
+            color: #2e86c1;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            font-size: 1.8em;
+            color: #1a5276;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .section-desc {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* About Section */
+        .about {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .about p {
+            font-size: 1.1em;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #555;
+        }
+        .about .highlight {
+            color: #2e86c1;
+            font-weight: bold;
+        }
+
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .gallery figure {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .gallery figure:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery figcaption {
+            padding: 12px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.9);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 8px;
+        }
+        .lightbox .caption {
+            color: white;
+            margin-top: 16px;
+            font-size: 1.1em;
+        }
+        .lightbox .close {
+            position: absolute;
+            top: 20px; right: 30px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .lightbox .prev, .lightbox .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5em;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 20px;
+        }
+        .lightbox .prev { left: 20px; }
+        .lightbox .next { right: 20px; }
+
+        /* Contact Section */
+        .contact {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .contact-card {
+            background: linear-gradient(135deg, #f0f8ff 0%, #eaf2f8 100%);
+            border-radius: 10px;
+            padding: 24px;
+            text-align: center;
+            border-left: 4px solid #2e86c1;
+        }
+        .contact-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .contact-card h3 {
+            color: #1a5276;
+            margin-bottom: 8px;
+        }
+        .contact-card p, .contact-card a {
+            color: #555;
+            text-decoration: none;
+        }
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Form */
+        .contact-form {
+            margin-top: 40px;
+        }
+        .contact-form h3 {
+            text-align: center;
+            color: #1a5276;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d5dbdb;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #2e86c1;
+            box-shadow: 0 0 0 3px rgba(46,134,193,0.1);
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1a5276, #2e86c1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #2e86c1, #5dade2);
+        }
+
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.6em; }
+        }
+
+        /* Footer */
+        footer {
+            background: #1a5276;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🏥 雙和醫院四下志工</h1>
+    <p class="subtitle">衛生福利部雙和醫院 ｜ 志願服務隊</p>
+    <p class="hospital">Shuang Ho Hospital · Volunteer Services</p>
+</header>
+
+<nav>
+    <a href="#about">關於我們</a>
+    <a href="#gallery">活動花絮</a>
+    <a href="#contact">志工聯絡</a>
+</nav>
+
+<div class="container">
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">關於我們</h2>
+        <p class="section-desc">攜手服務 · 溫暖關懷</p>
+        <p>
+            雙和醫院四下志工隊是一群熱心公益的夥伴，秉持<span class="highlight">「服務、關懷、奉獻」</span>的精神，
+            在醫院各個角落提供病患與家屬最溫暖的協助。我們歡迎更多有志之士加入志工行列，
+            一起為社區健康盡一份心力。
+        </p>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <h2 class="section-title">活動花絮</h2>
+        <p class="section-desc">志工服務的每一刻，都是動人的風景</p>
+        <div class="gallery" id="galleryGrid">
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2 class="section-title">志工聯絡區</h2>
+        <p class="section-desc">歡迎與我們聯繫，加入志工大家庭</p>
+
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="icon">🏥</div>
+                <h3>服務地點</h3>
+                <p>衛生福利部雙和醫院</p>
+                <p>新北市中和區中正路291號</p>
+            </div>
+            <div class="contact-card">
+                <div class="icon">📞</div>
+                <h3>聯絡電話</h3>
+                <p>志工服務台</p>
+                <p><a href="tel:0222490088">(02) 2249-0088</a></p>
+            </div>
+            <div class="contact-card">
+                <div class="icon">📧</div>
+                <h3>電子郵件</h3>
+                <p>志工服務信箱</p>
+                <p><a href="mailto:volunteer@shh.org.tw">volunteer@shh.org.tw</a></p>
+            </div>
+            <div class="contact-card">
+                <div class="icon">🕐</div>
+                <h3>服務時間</h3>
+                <p>週一至週五</p>
+                <p>上午 9:00 – 下午 5:00</p>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h3>📝 志工報名 / 洽詢表單</h3>
+            <form action="#" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" name="name" placeholder="請輸入您的姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">電話</label>
+                        <input type="tel" id="phone" name="phone" placeholder="請輸入聯絡電話" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">電子郵件</label>
+                        <input type="email" id="email" name="email" placeholder="請輸入電子郵件">
+                    </div>
+                    <div class="form-group">
+                        <label for="topic">洽詢主題</label>
+                        <select id="topic" name="topic">
+                            <option value="">請選擇</option>
+                            <option value="join">我想加入志工</option>
+                            <option value="info">志工服務諮詢</option>
+                            <option value="event">活動合作洽詢</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message">留言內容</label>
+                    <textarea id="message" name="message" placeholder="請寫下您想說的話..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">送 出 表 單</button>
+            </form>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>© 2026 雙和醫院四下志工隊 ｜ 衛生福利部雙和醫院 ｜ Powered by Volunteer Spirit</p>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <button class="close" onclick="closeLightbox()">&times;</button>
+    <button class="prev" onclick="changeImage(-1)">&#8249;</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="caption" id="lightboxCaption"></div>
+    <button class="next" onclick="changeImage(1)">&#8250;</button>
+</div>
+
+<script>
+    const images = [
+        'images/IMG_3499.JPG', 'images/IMG_3500.JPG', 'images/IMG_3501.JPG',
+        'images/IMG_3502.JPG', 'images/IMG_3503.JPG', 'images/IMG_3504.JPG',
+        'images/IMG_3505.JPG', 'images/IMG_3506.JPG', 'images/IMG_3507.JPG',
+        'images/IMG_3508.JPG', 'images/IMG_3509.JPG', 'images/IMG_3510.JPG'
+    ];
+
+    const gallery = document.getElementById('galleryGrid');
+    images.forEach((src, i) => {
+        const figure = document.createElement('figure');
+        figure.innerHTML = `<img src="${src}" alt="志工活動照片 ${i+1}" loading="lazy">
+                            <figcaption>志工活動剪影 ${i+1}</figcaption>`;
+        figure.onclick = () => openLightbox(i);
+        gallery.appendChild(figure);
+    });
+
+    let currentIdx = 0;
+    function openLightbox(idx) {
+        currentIdx = idx;
+        document.getElementById('lightboxImg').src = images[idx];
+        document.getElementById('lightboxCaption').textContent = `志工活動剪影 ${idx+1} / ${images.length}`;
+        document.getElementById('lightbox').classList.add('active');
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+    }
+    function changeImage(dir) {
+        currentIdx = (currentIdx + dir + images.length) % images.length;
+        openLightbox(currentIdx);
+    }
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') changeImage(-1);
+        if (e.key === 'ArrowRight') changeImage(1);
+    });
+
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+    });
+</script>
+
+</body>
+</html>
